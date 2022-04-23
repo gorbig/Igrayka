@@ -1,3 +1,24 @@
+const btn = document.getElementById("getJokeBtn");
+const text = document.getElementById("jokeText");
+const url = "https://icanhazdadjoke.com/";
+// https://geek-jokes.sameerkumar.website/api?format=json
+btn.addEventListener('click', getJoke);
+
+async function getJoke() {
+  const jokeData = await fetch(url, {
+    headers: {
+      'Accept': 'application/json'
+    }
+  });
+  const jokeObj = await jokeData.json();
+  //prompt(jokeObj.joke);
+  text.innerHTML = jokeObj.joke;
+  text.style.display = "inline-block"
+}
+
+
+
+
 searchForm = document.querySelector('.search-form');
 
 document.querySelector('#search-btn').onclick = () => {

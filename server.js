@@ -7,6 +7,8 @@ app.use(express.json())
 app.use("/reg",regRoutes)
 
 
+app.set('view engine', 'ejs')
+app.set('views', './')
 
 app.use('/css',express.static(__dirname +'/css'));
 app.use('/image', express.static(__dirname+"/image"));
