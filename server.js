@@ -22,7 +22,7 @@ app.use("/index", require("./routes/index"));
 
 const start = async () => {
     try{
-        await mongoose.connect('mongodb+srv://user:user@cluster0.vrdur.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+        await mongoose.connect('mongodb+srv://user:user@cluster1.vrdur.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
         app.listen(port, () =>
             console.log(`App listening at http://localhost:${port}`)
         );}
