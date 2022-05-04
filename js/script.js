@@ -2,7 +2,11 @@ const btn = document.getElementById("getJokeBtn");
 const text = document.getElementById("jokeText");
 const url = "https://icanhazdadjoke.com/";
 // https://geek-jokes.sameerkumar.website/api?format=json
-btn.addEventListener('click', getJoke);
+
+
+
+
+// btn.addEventListener('click', getJoke);
 
 async function getJoke() {
   const jokeData = await fetch(url, {
