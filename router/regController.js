@@ -3,15 +3,18 @@ const Role = require('./models/Role')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const  {validationResult} = require('express-validator')
+const  {secret} = require("./config")
 const {sign} = require("jsonwebtoken")
-const  {secret} = require("./models/config")
+
 
 const generateAccessToken = (id, roles) => {
     const payload = {
         id,
-        roles,
+        roles
     }
-    return jwt.sign(payload, secret, {expiresIn: "24h"})
+    return jwt.sign(payload,
+        secret,
+        {expiresIn: "24h"})
 }
 
 class regController{
@@ -28,8 +31,8 @@ class regController{
               return res.status(400).json({message:"a user with the same name already exists"})
           }
           const hashPassword = bcrypt.hashSync(password, 7);
-          const userRole = await Role.findOne({value:"USER"})
-          const user = new User({username, password:hashPassword, roles: [userRole.value]})
+          const userRole = await Role.findOne({value: "USER"})
+          const user = new User({username, password: hashPassword, roles: ["USER"]})
           await user.save()
           return res.json({message:"Пользователь успешно зарегистрировался"})
       }
@@ -48,17 +51,15 @@ class regController{
             return res.status(400).json({message:"Пользователь "  + username + " не найден"})
 
         }
-        const validPassword = bcrypt.compareSync(password, user.password)
+        const validPassword = bcrypt.compareSync(password, user.p)
 
-       if(!validPassword)
-       {
+        if(!validPassword)
+        {
            return res.status(400).json({message:'Ввведен не верный пароль  '})
-       }
-          const token = generateAccessToken(user._id, user.roles)
-          return res.json({token})
+        }
+        const token = generateAccessToken(username._id, username.roles)
+         return res.json({token})}
 
-
-      }
       catch (e){
           console.log(e)
           res.status(400).json({message:'Login error'})
@@ -67,14 +68,11 @@ class regController{
 
     async getUsers(req,res){
       try{
-          const userRole = new Role()
-          const adminRole = new Role({value:'ADMIN'})
-          await userRole.save()
-          await adminRole.save()
-          res.json("server work")
+          // const users = await User.find()
+          // res.json(users)
       }
       catch (e){
-
+        console.log(e)
       }
     }
 }
