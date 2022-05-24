@@ -26,6 +26,10 @@ class regController{
               return res.status(400).json({message:"Ошибка при регистрации", errors})
           }
           const {username,password} = req.body
+          console.log(username,password)
+
+          if (!username || !password) return res.send("Please enter all the fields");
+
           const candidate = await User.findOne({username})
           if(candidate){
               return res.status(400).json({message:"a user with the same name already exists"})
@@ -42,39 +46,52 @@ class regController{
       }
     }
 
-    async login(req,res){
-      try{
-        const {username, password} = req.body
-        const user = await User.findOne({username})
-        if(!user)
-        {
-            return res.status(400).json({message:"Пользователь "  + username + " не найден"})
+        async login(req,res){
+            try{
+                const {username, password} = req.body
+                const user = await User.findOne({username})
+                if(!user)
+                {
+                    return res.status(400).json({message:"Пользователь "  + username + " не найден"})
 
+                }
+                const validPassword = bcrypt.compareSync(password, user.password)
+
+                if(!validPassword)
+                {
+                    return res.status(400).json({message:'Ввведен не верный пароль  '})
+                }
+                const token = generateAccessToken(user._id, user.roles)
+                return res.json({message:'Вы успешно залогинились'})
+
+
+            }
+            catch (e){
+                console.log(e)
+                res.status(400).json({message:'Login error'})
+            }
         }
-        const validPassword = bcrypt.compareSync(password, user.p)
 
-        if(!validPassword)
-        {
-           return res.status(400).json({message:'Ввведен не верный пароль  '})
-        }
-        const token = generateAccessToken(username._id, username.roles)
-         return res.json({token})}
 
-      catch (e){
-          console.log(e)
-          res.status(400).json({message:'Login error'})
-      }
-    }
 
-    async getUsers(req,res){
-      try{
-          // const users = await User.find()
-          // res.json(users)
-      }
-      catch (e){
-        console.log(e)
-      }
-    }
+
+
+
+    // async mgaz(req,res){
+    //     const{username,password} = req.body;
+    //     console.log(username,password)
+    // }
+
+
+    // async getUsers(req,res){
+    //   try{
+    //
+    //
+    //   }
+    //   catch (e){
+    //     console.log(e)
+    //   }
+    // }
 }
 
 module.exports = new regController()

@@ -1,7 +1,8 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const path = require('path')
 const regRoutes = require('./router/regRouter')
-const port = 3000
+const PORT = process.env.PORT || 5000
 const app = express()
 app.use(express.json())
 app.use("/reg",regRoutes)
@@ -20,11 +21,14 @@ app.use("/blogs", require("./routes/blogs"));
 app.use("/index", require("./routes/index"));
 
 
+
+
+
 const start = async () => {
     try{
-        await mongoose.connect('mongodb+srv://user:user@cluster0.6qrmp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
-        app.listen(port, () =>
-            console.log(`App listening at http://localhost:${port}`)
+        await mongoose.connect('mongodb+srv://qwerty:qwerty123@cluster0.6c0yg.mongodb.net/?retryWrites=true&w=majority')
+        app.listen(PORT, () =>
+            console.log(`App listening at http://localhost:${PORT}`)
         );}
     catch (e) {
         console.log(e)
