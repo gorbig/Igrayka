@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "../node_modules/.bin/nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -13,11 +13,14 @@
   "dependencies": {
     "2gis-maps": "^3.7.1",
     "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.0",
     "ejs": "^3.1.7",
     "express": "^4.17.3",
     "express-validator": "^6.14.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.0",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "swagger-ui-express": "^4.4.0",
+    "update": "^0.7.4"
   }
 }

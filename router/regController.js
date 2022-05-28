@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const  {validationResult} = require('express-validator')
 const  {secret} = require("./config")
 const {sign} = require("jsonwebtoken")
+const mongoose = require("mongoose");
 
 
 const generateAccessToken = (id, roles) => {
@@ -35,8 +36,8 @@ class regController{
               return res.status(400).json({message:"a user with the same name already exists"})
           }
           const hashPassword = bcrypt.hashSync(password, 7);
-          const userRole = await Role.findOne({value: "USER"})
-          const user = new User({username, password: hashPassword, roles: ["USER"]})
+          const userRole = await Role.findOne({value: "ADMIN"})
+          const user = new User({username, password: hashPassword, roles: "USER"})
           await user.save()
           return res.json({message:"Пользователь успешно зарегистрировался"})
       }
@@ -45,7 +46,6 @@ class regController{
           res.status(400).json({message:'Registration error'})
       }
     }
-
         async login(req,res){
             try{
                 const {username, password} = req.body
@@ -62,9 +62,7 @@ class regController{
                     return res.status(400).json({message:'Ввведен не верный пароль  '})
                 }
                 const token = generateAccessToken(user._id, user.roles)
-                return res.json({message:'Вы успешно залогинились'})
-
-
+                return res.json({token})
             }
             catch (e){
                 console.log(e)
@@ -72,26 +70,15 @@ class regController{
             }
         }
 
-
-
-
-
-
-    // async mgaz(req,res){
-    //     const{username,password} = req.body;
-    //     console.log(username,password)
-    // }
-
-
-    // async getUsers(req,res){
-    //   try{
-    //
-    //
-    //   }
-    //   catch (e){
-    //     console.log(e)
-    //   }
-    // }
+        async getUsers(req,res){
+        try {
+            const users = await User.find()
+            res.json(users)
+        }
+        catch (e){
+            console.log(e)
+        }
+    }
 }
 
 module.exports = new regController()
